@@ -7,8 +7,8 @@
     :class="{ 'is-homepage': homepage }"
   >
     <template slot="brand">
-      <b-navbar-item tag="router-link" :to="{ path: '/' }"
-        >karaoke-app</b-navbar-item
+      <b-navbar-item tag="router-link" :to="{ path: '/' }" class="logo"
+        ><img src="@/assets/discoball64.png" /> karaoke-app</b-navbar-item
       >
     </template>
     <template slot="start">
@@ -72,6 +72,14 @@ nav.is-homepage .navbar-burger {
 
   &:hover {
     color: rgba(255, 255, 255, 1);
+  }
+}
+
+.navbar-brand .logo {
+  font-weight: bold;
+
+  img {
+    margin-right: 1em;
   }
 }
 </style>
