@@ -1,0 +1,103 @@
+<template>
+  <div class="modal-card login-modal" style="width:auto">
+    <form action="">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Login</p>
+      </header>
+
+      <section class="modal-card-body">
+        <div class="buttons social-buttons">
+          <b-button expanded class="is-facebook">
+            <span class="icon">
+              <i class="fab fa-facebook"></i>
+            </span>
+            <span>Login with Facebook</span>
+          </b-button>
+
+          <b-button expanded class="is-google">
+            <span class="icon">
+              <i class="fab fa-google"></i>
+            </span>
+            <span>Login with Google</span>
+          </b-button>
+        </div>
+
+        <div class="separator">OR</div>
+
+        <b-field>
+          <b-input
+            placeholder="Username or email"
+            required
+            icon-pack="fas"
+            icon="user"
+          ></b-input>
+        </b-field>
+
+        <b-field>
+          <b-input
+            type="password"
+            placeholder="Password"
+            password-reveal
+            required
+            icon-pack="fas"
+            icon="key"
+          ></b-input>
+        </b-field>
+
+        <div class="buttons">
+          <b-button expanded type="is-success">Login</b-button>
+        </div>
+      </section>
+
+      <footer class="modal-card-foot">
+        <span
+          >You don't have an account?
+          <a @click="showRegisterModal()">Sign up now!</a></span
+        >
+      </footer>
+    </form>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.social-buttons {
+  margin-bottom: 0 !important;
+}
+.separator {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin-top: 0.25em;
+  margin-bottom: 0.7em;
+  color: rgb(176, 176, 176);
+}
+.separator::before,
+.separator::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid rgba(176, 176, 176, 0.51);
+}
+.separator::before {
+  margin-right: 0.25em;
+}
+.separator::after {
+  margin-left: 0.25em;
+}
+</style>
+
+<script>
+import RegisterModal from "@/components/RegisterModal.vue";
+
+export default {
+  methods: {
+    showRegisterModal() {
+      this.$parent.close();
+      this.$buefy.modal.open({
+        parent: this.$root,
+        component: RegisterModal,
+        hasModalCard: true
+      });
+    }
+  }
+};
+</script>

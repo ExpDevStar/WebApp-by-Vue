@@ -1,29 +1,39 @@
 <template>
-  <b-navbar wrapper-class="container" transparent spaced :shadow="!homepage">
+  <b-navbar
+    wrapper-class="container"
+    transparent
+    spaced
+    :shadow="!homepage"
+    :class="{ 'is-homepage': homepage }"
+  >
     <template slot="brand">
       <b-navbar-item tag="router-link" :to="{ path: '/' }"
         >karaoke-app</b-navbar-item
       >
     </template>
-
     <template slot="start">
       <b-navbar-item tag="router-link" :to="{ path: '/' }">Home</b-navbar-item>
       <b-navbar-item tag="router-link" :to="{ path: '/about' }"
         >About</b-navbar-item
       >
     </template>
-
     <template slot="end">
       <b-navbar-item tag="div">
         <div class="buttons">
-          <a class="button is-primary" :class="{ 'is-inverted': homepage }"
-            >Sign up</a
-          >
-          <a
-            class="button is-primary is-outlined"
+          <button
+            class="button is-primary"
+            @click="showRegisterModal()"
             :class="{ 'is-inverted': homepage }"
-            >Login</a
           >
+            Sign up
+          </button>
+          <button
+            class="button is-primary is-outlined"
+            @click="showLoginModal()"
+            :class="{ 'is-inverted': homepage }"
+          >
+            Login
+          </button>
         </div>
       </b-navbar-item>
     </template>
@@ -31,7 +41,37 @@
 </template>
 
 <script>
+import LoginModal from "@/components/LoginModal.vue";
+import RegisterModal from "@/components/RegisterModal.vue";
+
 export default {
-  props: ["homepage"]
+  components: {},
+  props: ["homepage"],
+  methods: {
+    showLoginModal() {
+      this.$buefy.modal.open({
+        parent: this.$root,
+        component: LoginModal,
+        hasModalCard: true
+      });
+    },
+    showRegisterModal() {
+      this.$buefy.modal.open({
+        parent: this.$root,
+        component: RegisterModal,
+        hasModalCard: true
+      });
+    }
+  }
 };
 </script>
+
+<style lang="scss">
+nav.is-homepage .navbar-burger {
+  color: rgba(255, 255, 255, 0.7);
+
+  &:hover {
+    color: rgba(255, 255, 255, 1);
+  }
+}
+</style>
