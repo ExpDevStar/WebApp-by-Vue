@@ -1,5 +1,11 @@
 <template>
-  <b-navbar wrapper-class="container" transparent spaced :shadow="!homepage">
+  <b-navbar
+    wrapper-class="container"
+    transparent
+    spaced
+    :shadow="!homepage"
+    :class="{ 'is-homepage': homepage }"
+  >
     <template slot="brand">
       <b-navbar-item tag="router-link" :to="{ path: '/' }"
         >karaoke-app</b-navbar-item
@@ -59,3 +65,13 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+nav.is-homepage .navbar-burger {
+  color: rgba(255, 255, 255, 0.7);
+
+  &:hover {
+    color: rgba(255, 255, 255, 1);
+  }
+}
+</style>
