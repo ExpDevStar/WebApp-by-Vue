@@ -106,7 +106,11 @@ export default {
   },
   mounted() {
     this.player = new Plyr("#player", {
-      ratio: "16:9"
+      ratio: "16:9",
+      controls: ["play", "volume", "settings"],
+      fullscreen: {
+        enabled: false
+      }
     });
 
     this.animation = window.requestAnimationFrame(this.update);
