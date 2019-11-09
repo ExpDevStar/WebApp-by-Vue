@@ -6,8 +6,11 @@
   >
     <div class="hero-body">
       <div class="container" :class="{ 'is-fluid': fullscreen }">
-        <div class="expand-button" @click="toggleFullscreen">
-          <span class="icon is-large"
+        <div class="buttons">
+          <span class="icon is-medium control-button" @click="restart"
+            ><i class="fas fa-redo"></i
+          ></span>
+          <span class="icon is-medium control-button" @click="toggleFullscreen"
             ><i
               class="fas fa-lg"
               :class="{ 'fa-expand': !fullscreen, 'fa-compress': fullscreen }"
@@ -25,10 +28,18 @@
           </div>
 
           <div class="column lyrics-container">
-            <div class="current-text" :class="{ active: isCueActive }">
-              {{ currentText }}
-            </div>
-            <div class="future-text">{{ futureText }}</div>
+            <template v-if="ended">
+              <div class="control-button icon is-large" @click="restart">
+                <i class="fas fa-redo fa-3x"></i>
+              </div>
+            </template>
+
+            <template v-else>
+              <div class="current-text" :class="{ active: isCueActive }">
+                {{ currentText }}
+              </div>
+              <div class="future-text">{{ futureText }}</div>
+            </template>
           </div>
         </div>
       </div>
@@ -57,7 +68,8 @@ export default {
       animation: null,
       isCueActive: false,
       fullscreen: false,
-      progress: 0
+      progress: 0,
+      ended: false
     };
   },
   computed: {
@@ -89,19 +101,26 @@ export default {
 
       this.animation = window.requestAnimationFrame(this.update);
     },
-    toggleFullscreen(force) {
+    restart() {
+      this.player.restart();
+      this.cueIndex = -1;
+      this.isCueActive = false;
+      this.ended = false;
+
+      if (!this.player.playing) {
+        this.player.play();
+      }
+    },
+    start() {},
+    toggleFullscreen() {
       if (!this.fullscreen) {
         this.$refs.songPlayer.requestFullscreen();
       } else {
         document.exitFullscreen();
       }
-
-      this.fullscreen = force || !this.fullscreen;
     },
     onFullscreenChange() {
-      if (!document.fullscreenElement) {
-        this.toggleFullscreen(false);
-      }
+      this.fullscreen = document.fullscreen;
     }
   },
   mounted() {
@@ -110,6 +129,16 @@ export default {
       controls: ["play", "volume", "settings"],
       fullscreen: {
         enabled: false
+      }
+    });
+
+    this.player.on("ended", () => {
+      this.ended = true;
+    });
+
+    this.player.on("playing", () => {
+      if (this.ended) {
+        this.restart();
       }
     });
 
@@ -159,13 +188,16 @@ export default {
   }
 }
 
-.expand-button {
-  opacity: 0.5;
+.buttons {
   position: absolute;
   right: 0em;
   top: 0em;
-  cursor: pointer;
   z-index: 1;
+}
+
+.control-button {
+  opacity: 0.5;
+  cursor: pointer;
 
   &:hover {
     opacity: 1;
