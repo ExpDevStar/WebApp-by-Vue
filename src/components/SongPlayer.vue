@@ -8,8 +8,11 @@
           :data-plyr-embed-id="embedId"
         ></div>
       </div>
-      <div class="column cues-container">
-        <span class="current-text">{{ currentText }}</span>
+      <div class="column lyrics-container">
+        <div class="current-text" :class="{ active: isCueActive }">
+          {{ currentText }}
+        </div>
+        <div class="future-text">{{ futureText }}</div>
       </div>
     </div>
   </div>
@@ -26,9 +29,9 @@ export default {
     return {
       player: null,
       cues: cuesData.cues,
-      currentTime: 0,
-      currentText: "",
-      animation: null
+      cueIndex: -1,
+      animation: null,
+      isCueActive: false
     };
   },
   mounted() {
@@ -38,19 +41,29 @@ export default {
 
     this.animation = window.requestAnimationFrame(this.update);
   },
+  computed: {
+    currentText() {
+      return this.cueIndex > -1 ? this.cues[this.cueIndex].text : "...";
+    },
+    futureText() {
+      return typeof this.cues[this.cueIndex + 1] !== "undefined"
+        ? this.cues[this.cueIndex + 1].text
+        : "";
+    }
+  },
   methods: {
     update() {
-      this.currentTime = this.player.currentTime;
+      const time = this.player.currentTime;
 
-      for (let cue of this.cues) {
-        if (
-          this.currentTime >= cue.startTime &&
-          this.currentTime <= cue.endTime
-        ) {
-          this.currentText = cue.text;
-          break;
-        }
-        this.currentText = "";
+      const currentCueIndex = this.cues.findIndex(
+        cue => time >= cue.startTime && time <= cue.endTime
+      );
+
+      if (currentCueIndex > -1) {
+        this.cueIndex = currentCueIndex;
+        this.isCueActive = true;
+      } else {
+        this.isCueActive = false;
       }
 
       this.animation = window.requestAnimationFrame(this.update);
@@ -65,13 +78,33 @@ export default {
 
 <style lang="scss" scoped>
 .current-text {
-  font-weight: bold;
-  font-size: 1.5em;
   text-align: center;
 }
-.cues-container {
+.lyrics-container {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+
+  > div {
+    text-align: center;
+
+    &.current-text {
+      font-weight: bold;
+      font-size: 1.5em;
+      opacity: 0.5;
+      transition: opacity 0.5s ease-out;
+      transition-delay: 0.2s;
+
+      &.active {
+        opacity: 1;
+        transition: none;
+      }
+    }
+
+    &.future-text {
+      opacity: 0.8;
+    }
+  }
 }
 </style>
