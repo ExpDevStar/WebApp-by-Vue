@@ -1,9 +1,10 @@
 <template>
   <section
     class="hero is-dark is-bold"
+    ref="songPlayer"
     :class="{ 'is-fullheight': fullscreen }"
   >
-    <div class="hero-body" ref="songPlayer">
+    <div class="hero-body">
       <div class="container" :class="{ 'is-fluid': fullscreen }">
         <div class="expand-button" @click="toggleFullscreen">
           <span class="icon is-large"
@@ -32,6 +33,12 @@
         </div>
       </div>
     </div>
+
+    <div class="hero-foot">
+      <div class="progress-bar">
+        <span :style="{ width: progress }"></span>
+      </div>
+    </div>
   </section>
 </template>
 
@@ -49,7 +56,8 @@ export default {
       cueIndex: -1,
       animation: null,
       isCueActive: false,
-      fullscreen: false
+      fullscreen: false,
+      progress: 0
     };
   },
   computed: {
@@ -76,6 +84,8 @@ export default {
       } else {
         this.isCueActive = false;
       }
+
+      this.progress = (time / this.player.duration) * 100 + "%";
 
       this.animation = window.requestAnimationFrame(this.update);
     },
@@ -155,6 +165,19 @@ export default {
 
   &:hover {
     opacity: 1;
+  }
+}
+
+.progress-bar {
+  height: 6px;
+  position: relative;
+
+  > span {
+    display: block;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    background: #7957d5;
   }
 }
 </style>
