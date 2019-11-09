@@ -11,6 +11,7 @@
   "dependencies": {
     "buefy": "^0.8.6",
     "core-js": "^3.3.2",
+    "moment": "^2.24.0",
     "plyr": "^3.5.6",
     "vue": "^2.6.10",
     "vue-router": "^3.1.3",
