@@ -5,6 +5,7 @@
         <SongPlayer provider="youtube" embedId="FTQbiNvZqaY" />
       </div>
     </section>
+
     <header class="section">
       <div class="container">
         <div class="level">
@@ -21,6 +22,12 @@
           </div>
 
           <div class="level-right">
+            <div class="level-item">
+              <figure class="avatar image is-32x32">
+                <img class="is-rounded" :src="authorMeta.avatar" />
+              </figure>
+            </div>
+
             <div class="level-item">updated {{ updatedAt }}</div>
 
             <div class="level-item">
@@ -33,6 +40,44 @@
         </div>
       </div>
     </header>
+
+    <section class="section suggestions">
+      <div class="container">
+        <h3 class="subtitle is-4">Songs from {{ songMeta.artist }}</h3>
+
+        <div class="columns">
+          <div class="column">
+            <img src="http://placehold.jp/500x350.png" alt="placeholder" />
+          </div>
+          <div class="column">
+            <img src="http://placehold.jp/500x350.png" alt="placeholder" />
+          </div>
+          <div class="column">
+            <img src="http://placehold.jp/500x350.png" alt="placeholder" />
+          </div>
+          <div class="column">
+            <img src="http://placehold.jp/500x350.png" alt="placeholder" />
+          </div>
+        </div>
+
+        <h3 class="subtitle is-4">Songs made by {{ authorMeta.name }}</h3>
+
+        <div class="columns">
+          <div class="column">
+            <img src="http://placehold.jp/500x350.png" alt="placeholder" />
+          </div>
+          <div class="column">
+            <img src="http://placehold.jp/500x350.png" alt="placeholder" />
+          </div>
+          <div class="column">
+            <img src="http://placehold.jp/500x350.png" alt="placeholder" />
+          </div>
+          <div class="column">
+            <img src="http://placehold.jp/500x350.png" alt="placeholder" />
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 </template>
 
@@ -49,6 +94,10 @@ export default {
         title: "Africa",
         artist: "Toto",
         updatedAt: Date.now()
+      },
+      authorMeta: {
+        name: "User",
+        avatar: "http://placehold.jp/200x200.png"
       }
     };
   },
@@ -68,3 +117,9 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.suggestions {
+  padding-top: 0;
+}
+</style>
