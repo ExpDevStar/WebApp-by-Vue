@@ -1,10 +1,6 @@
 <template>
   <main>
-    <section class="hero is-dark is-bold">
-      <div class="hero-body">
-        <SongPlayer provider="youtube" embedId="FTQbiNvZqaY" />
-      </div>
-    </section>
+    <SongPlayer provider="youtube" embedId="FTQbiNvZqaY" />
 
     <header class="section">
       <div class="container">

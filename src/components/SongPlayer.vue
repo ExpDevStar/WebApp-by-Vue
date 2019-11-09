@@ -1,21 +1,38 @@
 <template>
-  <div class="container">
-    <div class="columns">
-      <div class="column">
-        <div
-          id="player"
-          :data-plyr-provider="provider"
-          :data-plyr-embed-id="embedId"
-        ></div>
-      </div>
-      <div class="column lyrics-container">
-        <div class="current-text" :class="{ active: isCueActive }">
-          {{ currentText }}
+  <section
+    class="hero is-dark is-bold"
+    :class="{ 'is-fullheight': fullscreen }"
+  >
+    <div class="hero-body" ref="songPlayer">
+      <div class="container" :class="{ 'is-fluid': fullscreen }">
+        <div class="expand-button" @click="toggleFullscreen">
+          <span class="icon is-large"
+            ><i
+              class="fas fa-lg"
+              :class="{ 'fa-expand': !fullscreen, 'fa-compress': fullscreen }"
+            ></i
+          ></span>
         </div>
-        <div class="future-text">{{ futureText }}</div>
+
+        <div class="columns">
+          <div class="column">
+            <div
+              id="player"
+              :data-plyr-provider="provider"
+              :data-plyr-embed-id="embedId"
+            ></div>
+          </div>
+
+          <div class="column lyrics-container">
+            <div class="current-text" :class="{ active: isCueActive }">
+              {{ currentText }}
+            </div>
+            <div class="future-text">{{ futureText }}</div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -31,15 +48,9 @@ export default {
       cues: cuesData.cues,
       cueIndex: -1,
       animation: null,
-      isCueActive: false
+      isCueActive: false,
+      fullscreen: false
     };
-  },
-  mounted() {
-    this.player = new Plyr("#player", {
-      ratio: "16:9"
-    });
-
-    this.animation = window.requestAnimationFrame(this.update);
   },
   computed: {
     currentText() {
@@ -67,11 +78,36 @@ export default {
       }
 
       this.animation = window.requestAnimationFrame(this.update);
+    },
+    toggleFullscreen(force) {
+      if (!this.fullscreen) {
+        this.$refs.songPlayer.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+
+      this.fullscreen = force || !this.fullscreen;
+    },
+    onFullscreenChange() {
+      if (!document.fullscreenElement) {
+        this.toggleFullscreen(false);
+      }
     }
+  },
+  mounted() {
+    this.player = new Plyr("#player", {
+      ratio: "16:9"
+    });
+
+    this.animation = window.requestAnimationFrame(this.update);
+
+    document.addEventListener("fullscreenchange", this.onFullscreenChange);
   },
   destroyed() {
     window.cancelAnimationFrame(this.animation);
     this.animation = null;
+
+    document.removeEventListener("fullscreenchange", this.onFullscreenChange);
   }
 };
 </script>
@@ -80,6 +116,7 @@ export default {
 .current-text {
   text-align: center;
 }
+
 .lyrics-container {
   display: flex;
   align-items: center;
@@ -105,6 +142,19 @@ export default {
     &.future-text {
       opacity: 0.8;
     }
+  }
+}
+
+.expand-button {
+  opacity: 0.5;
+  position: absolute;
+  right: 0em;
+  top: 0em;
+  cursor: pointer;
+  z-index: 1;
+
+  &:hover {
+    opacity: 1;
   }
 }
 </style>
