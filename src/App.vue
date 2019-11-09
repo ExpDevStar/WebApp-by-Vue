@@ -25,6 +25,10 @@
 #app > main {
   flex: 1;
 }
+
+.modal-close {
+  background-color: rgba(10, 10, 10, 0.2) !important;
+}
 </style>
 
 <script>

@@ -15,7 +15,9 @@
           <template slot="label">
             Password
             <b-tooltip type="is-dark" label="At least 6 characters">
-              <i class="far fa-question-circle"></i>
+              <span class="icon">
+                <i class="far fa-question-circle"></i>
+              </span>
             </b-tooltip>
           </template>
           <b-input
