@@ -11,8 +11,11 @@
     <div class="hero-body">
       <div class="container is-fluid">
         <div class="buttons">
+          <span class="icon is-medium control-button" @click="changeFontSize"
+            ><i class="fas fa-font fa-lg"></i
+          ></span>
           <span class="icon is-medium control-button" @click="restart"
-            ><i class="fas fa-redo"></i
+            ><i class="fas fa-redo fa-lg"></i
           ></span>
           <span class="icon is-medium control-button" @click="toggleFullscreen"
             ><i
@@ -31,7 +34,10 @@
             ></div>
           </div>
 
-          <div class="column lyrics-container">
+          <div
+            class="column lyrics-container"
+            :style="{ 'font-size': fontSize + 'em' }"
+          >
             <template v-if="ended">
               <div class="control-button icon is-large" @click="restart">
                 <i class="fas fa-redo fa-3x"></i>
@@ -73,7 +79,8 @@ export default {
       isCueActive: false,
       fullscreen: false,
       progress: 0,
-      ended: false
+      ended: false,
+      fontSize: 1
     };
   },
   computed: {
@@ -125,9 +132,20 @@ export default {
     },
     onFullscreenChange() {
       this.fullscreen = document.fullscreen;
+    },
+    changeFontSize() {
+      this.fontSize = this.fontSize + 0.5;
+      if (this.fontSize > 3) {
+        this.fontSize = 1;
+      }
+      localStorage.fontSize = this.fontSize;
     }
   },
   mounted() {
+    if (localStorage.fontSize) {
+      this.fontSize = +localStorage.fontSize;
+    }
+
     this.player = new Plyr("#player", {
       ratio: "16:9",
       controls: ["play", "volume", "settings"],
