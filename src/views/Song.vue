@@ -15,6 +15,8 @@
             <div class="level-item">
               <b-rate icon-pack="fas" spaced size="is-small"></b-rate>
             </div>
+
+            <div class="level-item">{{ songMeta.playCount }} plays</div>
           </div>
 
           <div class="level-right">
@@ -89,7 +91,8 @@ export default {
       songMeta: {
         title: "Africa",
         artist: "Toto",
-        updatedAt: Date.now()
+        updatedAt: Date.now(),
+        playCount: 138
       },
       authorMeta: {
         name: "User",

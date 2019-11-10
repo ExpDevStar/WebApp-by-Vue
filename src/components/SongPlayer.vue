@@ -168,6 +168,7 @@ export default {
 
   > div {
     text-align: center;
+    margin: 0.2em 0;
 
     &.current-text {
       font-weight: bold;
@@ -215,5 +216,9 @@ export default {
     position: relative;
     background: #7957d5;
   }
+}
+
+.hero.is-fullheight .lyrics-container {
+  font-size: 1.6em;
 }
 </style>
