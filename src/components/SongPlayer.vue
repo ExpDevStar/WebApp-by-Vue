@@ -1,11 +1,15 @@
 <template>
   <section
-    class="hero is-dark is-bold"
+    class="hero song-player"
     ref="songPlayer"
-    :class="{ 'is-fullheight': fullscreen }"
+    :class="{
+      'is-fullheight': fullscreen,
+      'is-black': fullscreen,
+      'is-dark is-bold': !fullscreen
+    }"
   >
     <div class="hero-body">
-      <div class="container" :class="{ 'is-fluid': fullscreen }">
+      <div class="container is-fluid">
         <div class="buttons">
           <span class="icon is-medium control-button" @click="restart"
             ><i class="fas fa-redo"></i
@@ -19,7 +23,7 @@
         </div>
 
         <div class="columns">
-          <div class="column">
+          <div class="column video-container">
             <div
               id="player"
               :data-plyr-provider="provider"
@@ -165,6 +169,7 @@ export default {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  font-size: 1.2em;
 
   > div {
     text-align: center;
@@ -216,9 +221,5 @@ export default {
     position: relative;
     background: #7957d5;
   }
-}
-
-.hero.is-fullheight .lyrics-container {
-  font-size: 1.6em;
 }
 </style>
