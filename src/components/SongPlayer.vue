@@ -9,22 +9,21 @@
     }"
   >
     <div class="hero-body">
+      <div class="buttons">
+        <span class="icon is-medium control-button" @click="changeFontSize"
+          ><i class="fas fa-font fa-lg"></i
+        ></span>
+        <span class="icon is-medium control-button" @click="restart"
+          ><i class="fas fa-redo fa-lg"></i
+        ></span>
+        <span class="icon is-medium control-button" @click="toggleFullscreen"
+          ><i
+            class="fas fa-lg"
+            :class="{ 'fa-expand': !fullscreen, 'fa-compress': fullscreen }"
+          ></i
+        ></span>
+      </div>
       <div class="container is-fluid">
-        <div class="buttons">
-          <span class="icon is-medium control-button" @click="changeFontSize"
-            ><i class="fas fa-font fa-lg"></i
-          ></span>
-          <span class="icon is-medium control-button" @click="restart"
-            ><i class="fas fa-redo fa-lg"></i
-          ></span>
-          <span class="icon is-medium control-button" @click="toggleFullscreen"
-            ><i
-              class="fas fa-lg"
-              :class="{ 'fa-expand': !fullscreen, 'fa-compress': fullscreen }"
-            ></i
-          ></span>
-        </div>
-
         <div class="columns">
           <div class="column video-container">
             <div
@@ -212,10 +211,14 @@ export default {
   }
 }
 
+.hero-body {
+  position: relative;
+}
+
 .buttons {
   position: absolute;
-  right: 0em;
-  top: 0em;
+  right: 1.5em;
+  top: 1.5em;
   z-index: 1;
 }
 
