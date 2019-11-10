@@ -10,13 +10,13 @@
   >
     <div class="hero-body">
       <div class="buttons">
-        <span class="icon is-medium control-button" @click="changeFontSize"
+        <span class="icon is-large control-button" @click="changeFontSize"
           ><i class="fas fa-font fa-lg"></i
         ></span>
-        <span class="icon is-medium control-button" @click="restart"
+        <span class="icon is-large control-button" @click="restart"
           ><i class="fas fa-redo fa-lg"></i
         ></span>
-        <span class="icon is-medium control-button" @click="toggleFullscreen"
+        <span class="icon is-large control-button" @click="toggleFullscreen"
           ><i
             class="fas fa-lg"
             :class="{ 'fa-expand': !fullscreen, 'fa-compress': fullscreen }"
