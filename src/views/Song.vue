@@ -1,6 +1,7 @@
 <template>
   <main>
-    <SongPlayer provider="youtube" embedId="FTQbiNvZqaY" />
+    <KaraokeModule provider="youtube" embed-id="FTQbiNvZqaY" :cues="cues" />
+    <!-- <KaraokeModule provider="vimeo" embed-id="298282989" :cues="cues" /> -->
 
     <header class="section">
       <div class="container">
@@ -80,12 +81,14 @@
 </template>
 
 <script>
-import SongPlayer from "@/components/SongPlayer.vue";
+import KaraokeModule from "@/components/KaraokeModule.vue";
 import ReportModal from "@/components/ReportModal.vue";
+import cuesData from "@/assets/example-cues.json";
 import moment from "moment";
 
 export default {
-  components: { SongPlayer },
+  components: { KaraokeModule },
+
   data() {
     return {
       songMeta: {
@@ -94,17 +97,26 @@ export default {
         updatedAt: Date.now(),
         playCount: 138
       },
+
       authorMeta: {
         name: "User",
         avatar: "http://placehold.jp/200x200.png"
-      }
+      },
+
+      cues: cuesData.cues
     };
   },
+
   computed: {
     updatedAt() {
       return moment(this.songMeta.updatedAt).fromNow();
+    },
+
+    heading() {
+      return `${this.songMeta.artist} - ${this.songMeta.title}`;
     }
   },
+
   methods: {
     reportModal() {
       this.$buefy.modal.open({

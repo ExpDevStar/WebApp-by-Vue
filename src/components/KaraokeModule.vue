@@ -1,28 +1,18 @@
 <template>
-  <section
-    class="hero song-player"
-    ref="songPlayer"
-    :class="{
-      'is-fullheight': fullscreen,
-      'is-black': fullscreen,
-      'is-dark is-bold': !fullscreen
-    }"
-  >
+  <section class="hero karaoke-module" ref="karaoke-module" :class="heroClass">
+    <div class="controls">
+      <span class="icon is-large" @click="changeFontSize"
+        ><i class="fas fa-font fa-lg"></i
+      ></span>
+      <span class="icon is-large" @click="restart"
+        ><i class="fas fa-redo fa-lg"></i
+      ></span>
+      <span class="icon is-large" @click="toggleFullscreen"
+        ><i class="fas fa-lg" :class="expandIcon"></i
+      ></span>
+    </div>
+
     <div class="hero-body">
-      <div class="buttons">
-        <span class="icon is-large control-button" @click="changeFontSize"
-          ><i class="fas fa-font fa-lg"></i
-        ></span>
-        <span class="icon is-large control-button" @click="restart"
-          ><i class="fas fa-redo fa-lg"></i
-        ></span>
-        <span class="icon is-large control-button" @click="toggleFullscreen"
-          ><i
-            class="fas fa-lg"
-            :class="{ 'fa-expand': !fullscreen, 'fa-compress': fullscreen }"
-          ></i
-        ></span>
-      </div>
       <div class="container is-fluid">
         <div class="columns">
           <div class="column video-container">
@@ -33,16 +23,12 @@
             ></div>
           </div>
 
-          <div
-            class="column lyrics-container"
-            :style="{ 'font-size': fontSize + 'em' }"
-          >
-            <template v-if="ended">
+          <div class="column lyrics-container" :style="lyricsStyle">
+            <template v-if="isFinished">
               <div class="control-button icon is-large" @click="restart">
                 <i class="fas fa-redo fa-3x"></i>
               </div>
             </template>
-
             <template v-else>
               <div class="current-text" :class="{ active: isCueActive }">
                 {{ currentText }}
@@ -65,37 +51,59 @@
 <script>
 import Plyr from "plyr";
 import "plyr/dist/plyr.css";
-import cuesData from "@/assets/example-cues.json";
 
 export default {
-  props: ["provider", "embedId"],
+  props: {
+    provider: String,
+    embedId: String,
+    cues: Array
+  },
+
   data() {
     return {
       player: null,
-      cues: cuesData.cues,
       cueIndex: -1,
       animation: null,
       isCueActive: false,
-      fullscreen: false,
-      progress: 0,
-      ended: false,
-      fontSize: 1
+      isFullscreen: false,
+      isFinished: false,
+      fontSize: 1.2,
+      progress: 0
     };
   },
+
   computed: {
     currentText() {
       return this.cueIndex > -1 ? this.cues[this.cueIndex].text : "...";
     },
+
     futureText() {
       return typeof this.cues[this.cueIndex + 1] !== "undefined"
         ? this.cues[this.cueIndex + 1].text
         : "";
+    },
+
+    heroClass() {
+      return this.isFullscreen ? "is-fullheight is-black" : "is-dark is-bold";
+    },
+
+    expandIcon() {
+      return this.isFullscreen ? "fa-compress" : "fa-expand";
+    },
+
+    lyricsStyle() {
+      return { "font-size": this.fontSize + "em" };
     }
   },
+
   methods: {
     update() {
-      const time = this.player.currentTime;
+      this.updateCues();
+      this.updateProgress();
+    },
 
+    updateCues() {
+      const time = this.player.currentTime;
       const currentCueIndex = this.cues.findIndex(
         cue => time >= cue.startTime && time <= cue.endTime
       );
@@ -106,81 +114,88 @@ export default {
       } else {
         this.isCueActive = false;
       }
-
-      this.progress = (time / this.player.duration) * 100 + "%";
-
-      this.animation = window.requestAnimationFrame(this.update);
     },
+
+    updateProgress() {
+      this.progress =
+        (this.player.currentTime / this.player.duration) * 100 + "%";
+    },
+
     restart() {
       this.player.restart();
       this.cueIndex = -1;
       this.isCueActive = false;
-      this.ended = false;
+      this.isFinished = false;
 
       if (!this.player.playing) {
         this.player.play();
       }
     },
-    start() {},
+
     toggleFullscreen() {
-      if (!this.fullscreen) {
-        this.$refs.songPlayer.requestFullscreen();
+      if (!this.isFullscreen) {
+        this.$refs["karaoke-module"].requestFullscreen();
       } else {
         document.exitFullscreen();
       }
     },
+
     onFullscreenChange() {
-      this.fullscreen = document.fullscreen;
+      this.isFullscreen = document.fullscreen;
     },
+
     changeFontSize() {
       this.fontSize = this.fontSize + 0.5;
-      if (this.fontSize > 3) {
-        this.fontSize = 1;
+      if (this.fontSize > 2.2) {
+        this.fontSize = 1.2;
       }
       localStorage.fontSize = this.fontSize;
+    },
+
+    cancelUpdate() {
+      window.cancelAnimationFrame(this.animation);
+      this.animation = null;
+    },
+
+    createPlayer() {
+      const player = new Plyr("#player", {
+        ratio: "16:9",
+        controls: ["play", "volume", "settings"],
+        fullscreen: {
+          enabled: false
+        }
+      });
+
+      player.on("ended", () => {
+        this.isFinished = true;
+      });
+      player.on("playing", () => {
+        if (this.isFinished) {
+          this.restart();
+        }
+      });
+      player.on("timeupdate", this.update);
+
+      this.player = player;
     }
   },
+
   mounted() {
     if (localStorage.fontSize) {
       this.fontSize = +localStorage.fontSize;
     }
-
-    this.player = new Plyr("#player", {
-      ratio: "16:9",
-      controls: ["play", "volume", "settings"],
-      fullscreen: {
-        enabled: false
-      }
-    });
-
-    this.player.on("ended", () => {
-      this.ended = true;
-    });
-
-    this.player.on("playing", () => {
-      if (this.ended) {
-        this.restart();
-      }
-    });
-
-    this.animation = window.requestAnimationFrame(this.update);
-
+    this.createPlayer();
     document.addEventListener("fullscreenchange", this.onFullscreenChange);
   },
-  destroyed() {
-    window.cancelAnimationFrame(this.animation);
-    this.animation = null;
 
+  destroyed() {
+    this.player.destroy();
     document.removeEventListener("fullscreenchange", this.onFullscreenChange);
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.current-text {
-  text-align: center;
-}
-
 .lyrics-container {
   display: flex;
   align-items: center;
@@ -196,8 +211,7 @@ export default {
       font-weight: bold;
       font-size: 1.5em;
       opacity: 0.5;
-      transition: opacity 0.5s ease-out;
-      transition-delay: 0.2s;
+      transition: opacity 0.4s ease-out;
 
       &.active {
         opacity: 1;
@@ -211,24 +225,8 @@ export default {
   }
 }
 
-.hero-body {
+.karaoke-module {
   position: relative;
-}
-
-.buttons {
-  position: absolute;
-  right: 1.5em;
-  top: 1.5em;
-  z-index: 1;
-}
-
-.control-button {
-  opacity: 0.5;
-  cursor: pointer;
-
-  &:hover {
-    opacity: 1;
-  }
 }
 
 .progress-bar {
@@ -241,6 +239,22 @@ export default {
     overflow: hidden;
     position: relative;
     background: #7957d5;
+  }
+}
+
+.controls {
+  position: absolute;
+  right: 1.5em;
+  top: 1.5em;
+  z-index: 1;
+
+  .icon {
+    opacity: 0.5;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 1;
+    }
   }
 }
 </style>
