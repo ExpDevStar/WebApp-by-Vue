@@ -11,29 +11,36 @@
             :data-plyr-embed-id="video.embedId"
           ></div>
 
-          <div class="controls">
-            <b-button @click="loadVideoModal">Load video</b-button>
-
-            <div v-if="currentTime" class="right">
-              <b-button @click="player.rewind(1)"
-                ><i class="fas fa-angle-double-left"></i
-              ></b-button>
-              <b-button @click="player.rewind()"
-                ><i class="fas fa-angle-left"></i
-              ></b-button>
-              <b-input
-                v-if="currentTime"
-                type="text"
-                :value="currentTime"
-                class="time"
-              />
-              <b-button @click="player.forward()"
-                ><i class="fas fa-angle-right"></i
-              ></b-button>
-              <b-button @click="player.forward(1)"
-                ><i class="fas fa-angle-double-right"></i
-              ></b-button>
+          <div v-if="!player" class="card player-placeholder">
+            <div class="wrapper">
+              <b-button @click="loadVideoModal">Load video</b-button>
             </div>
+          </div>
+
+          <div class="controls">
+            <b-field v-if="player">
+              <p class="control">
+                <b-button @click="player.rewind(1)"
+                  ><i class="fas fa-angle-double-left"></i
+                ></b-button>
+              </p>
+              <p class="control">
+                <b-button @click="player.rewind()"
+                  ><i class="fas fa-angle-left"></i
+                ></b-button>
+              </p>
+              <b-input type="text" :value="currentTime" class="time" />
+              <p class="control">
+                <b-button @click="player.forward()"
+                  ><i class="fas fa-angle-right"></i
+                ></b-button>
+              </p>
+              <p class="control">
+                <b-button @click="player.forward(1)"
+                  ><i class="fas fa-angle-double-right"></i
+                ></b-button>
+              </p>
+            </b-field>
           </div>
         </div>
 
@@ -162,19 +169,10 @@ export default {
 .controls {
   margin-top: 1em;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 
   .time {
     width: 6em;
-  }
-
-  .right {
-    display: flex;
-
-    button,
-    .control {
-      margin-left: 0.5em;
-    }
   }
 }
 
@@ -195,5 +193,24 @@ export default {
   padding: 0.75rem;
   display: flex;
   justify-content: space-between;
+}
+
+.player-placeholder {
+  position: relative;
+  overflow: hidden;
+  height: 0;
+  padding-top: 56.25%;
+  background: #eee;
+
+  .wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 </style>
