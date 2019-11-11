@@ -19,6 +19,9 @@
       <b-navbar-item tag="router-link" :to="{ path: '/song-test' }"
         >Song test</b-navbar-item
       >
+      <b-navbar-item tag="router-link" :to="{ path: '/creator' }"
+        >Creator</b-navbar-item
+      >
     </template>
     <template slot="end">
       <b-navbar-item tag="div">
