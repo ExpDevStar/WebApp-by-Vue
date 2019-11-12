@@ -50,10 +50,10 @@
               <p class="card-header-title">Cues</p>
             </header>
 
-            <div class="cues-container" v-if="lines.length > 0">
-              <template v-for="(line, index) in lines">
+            <div class="cues-container" v-if="cues.length > 0">
+              <template v-for="(cue, index) in cues">
                 <CreatorCue
-                  :text="line"
+                  :cue="cue"
                   :key="index"
                   :currentTime="currentTime"
                   v-on:seek="seekTo($event)"
@@ -88,6 +88,7 @@ export default {
   components: {
     CreatorCue
   },
+
   data() {
     return {
       player: null,
@@ -95,9 +96,14 @@ export default {
       video: {
         provider: null,
         embedId: null
-      },
-      lines: []
+      }
     };
+  },
+
+  computed: {
+    cues() {
+      return this.$store.getters.cues;
+    }
   },
 
   methods: {
@@ -128,9 +134,16 @@ export default {
     },
 
     importLyrics(lyrics) {
-      this.lines = lyrics.split(/\r?\n/).filter(text => {
-        return text.length > 0;
-      });
+      let cues = lyrics
+        .split(/\r?\n/)
+        .filter(text => text.length > 0)
+        .map(text => ({
+          text,
+          startTime: null,
+          endTime: null
+        }));
+
+      this.$store.commit("setCues", cues);
     },
 
     loadVideo(video) {
@@ -160,7 +173,14 @@ export default {
       this.player.play();
     },
 
-    validate() {}
+    validate() {
+      const { cues } = this;
+      this.$buefy.dialog.alert({
+        title: "Parsed cues",
+        message: "<pre>" + JSON.stringify({ cues }, null, 1) + "</pre>",
+        confirmText: "Ok"
+      });
+    }
   }
 };
 </script>

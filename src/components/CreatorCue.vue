@@ -16,7 +16,7 @@
     ></b-button>
 
     <div class="text" @click="$emit('seek', startTime)">
-      {{ text }}
+      {{ cue.text }}
     </div>
 
     <b-input
@@ -37,14 +37,8 @@
 <script>
 export default {
   props: {
-    text: String,
+    cue: Object,
     currentTime: Number
-  },
-  data() {
-    return {
-      startTime: null,
-      endTime: null
-    };
   },
   computed: {
     index() {
@@ -54,6 +48,24 @@ export default {
       return this.currentTime > 0
         ? this.currentTime >= this.startTime && this.currentTime <= this.endTime
         : false;
+    },
+    startTime: {
+      get() {
+        return this.cue.startTime;
+      },
+      set(startTime) {
+        const { cue } = this;
+        this.$store.commit("updateCue", { cue, startTime });
+      }
+    },
+    endTime: {
+      get() {
+        return this.cue.endTime;
+      },
+      set(endTime) {
+        const { cue } = this;
+        this.$store.commit("updateCue", { cue, endTime });
+      }
     }
   },
   methods: {
