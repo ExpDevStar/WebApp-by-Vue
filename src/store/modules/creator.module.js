@@ -1,10 +1,18 @@
 const state = {
-  cues: []
+  cues: [],
+  video: {
+    provider: "",
+    embedId: ""
+  }
 };
 
 const getters = {
   cues() {
     return state.cues;
+  },
+
+  video() {
+    return state.video;
   }
 };
 
@@ -16,6 +24,10 @@ const mutations = {
   updateCue(state, { cue, startTime = cue.startTime, endTime = cue.endTime }) {
     cue.startTime = startTime;
     cue.endTime = endTime;
+  },
+
+  setVideo(state, video) {
+    state.video = video;
   }
 };
 

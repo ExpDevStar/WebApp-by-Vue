@@ -115,6 +115,7 @@ export default {
     text-overflow: ellipsis;
     overflow: hidden;
     cursor: pointer;
+    min-width: 5em;
   }
 
   .time-input {
