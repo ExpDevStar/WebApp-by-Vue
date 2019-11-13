@@ -1,17 +1,36 @@
 <template>
   <main class="section">
     <div class="container">
-      <h4 class="title is-4">Creator</h4>
+      <div class="level">
+        <div class="level-left">
+          <h4 class="title is-4">Creator</h4>
+        </div>
+        <div class="level-right" v-if="step === 1">
+          <div class="level-item">
+            <b-button @click="showHelpModal"
+              ><i class="far fa-question-circle"></i
+            ></b-button>
+          </div>
+          <div class="level-item">
+            <b-button>Save and exit</b-button>
+          </div>
+        </div>
+      </div>
 
       <template v-if="step === 0">
         <p>
           Song creator allows you to bring your favorite karaoke hits into the
-          platform through an easy and intuitive interface. You'll have to
-          provide video from currently supported video services (<strong
-            >Youtube</strong
+          platform through a
+          <b-tooltip
+            position="is-top"
+            type="is-black"
+            dashed
+            label="(pl: prosto, acz schludnie)"
+            >simple, yet elegant</b-tooltip
           >
-          and <strong>Vimeo</strong>) and manually synchronize lyrics with the
-          audio track.
+          interface. You'll have to provide video from currently supported video
+          services (<strong>Youtube</strong> and <strong>Vimeo</strong>) and
+          manually synchronize lyrics with the audio track.
         </p>
         <hr />
         <p class="buttons">
@@ -52,6 +71,7 @@
 
 <script>
 import CreatorModule from "@/components/CreatorModule.vue";
+import CreatorModalHelp from "@/components/CreatorModalHelp.vue";
 
 export default {
   components: { CreatorModule },
@@ -65,6 +85,14 @@ export default {
   methods: {
     nextStep() {
       this.step++;
+    },
+
+    showHelpModal() {
+      this.$buefy.modal.open({
+        parent: this.$root,
+        component: CreatorModalHelp,
+        hasModalCard: true
+      });
     }
   }
 };

@@ -141,7 +141,6 @@ export default {
     },
 
     loadVideo() {
-      console.log(this.player);
       this.$nextTick(() => {
         const player = new Plyr("#player", {
           ratio: "16:9",
@@ -182,7 +181,6 @@ export default {
         });
         return;
       }
-      console.log("test");
       this.$emit("finished");
     }
   },
