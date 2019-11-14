@@ -71,9 +71,10 @@
 </template>
 
 <script>
-import ModalImportLyrics from "@/components/ModalImportLyrics.vue";
-import ModalLoadVideo from "@/components/ModalLoadVideo.vue";
+import CreatorModalImportLyrics from "@/components/CreatorModalImportLyrics.vue";
+import CreatorModalLoadVideo from "@/components/CreatorModalLoadVideo.vue";
 import CreatorCue from "@/components/CreatorCue.vue";
+import { error } from "@/utils/toasts.js";
 
 import Plyr from "plyr";
 import "plyr/dist/plyr.css";
@@ -103,7 +104,7 @@ export default {
     importLyricsModal() {
       this.$buefy.modal.open({
         parent: this,
-        component: ModalImportLyrics,
+        component: CreatorModalImportLyrics,
         hasModalCard: true,
         events: {
           import: lyrics => {
@@ -116,7 +117,7 @@ export default {
     loadVideoModal() {
       this.$buefy.modal.open({
         parent: this,
-        component: ModalLoadVideo,
+        component: CreatorModalLoadVideo,
         hasModalCard: true,
         events: {
           load: video => {
@@ -166,20 +167,11 @@ export default {
     },
 
     validate() {
-      let error = "";
       if (!this.video.provider || !this.video.embedId) {
-        error = "You haven't provided video source";
+        return error("You haven't provided video source");
       }
       if (this.cues.length < 1) {
-        error = "There aren't any cues on the list";
-      }
-      if (error.length > 0) {
-        this.$buefy.toast.open({
-          message: error,
-          position: "is-bottom",
-          type: "is-danger"
-        });
-        return;
+        return error("There aren't any cues on the list");
       }
       this.$emit("finished");
     }

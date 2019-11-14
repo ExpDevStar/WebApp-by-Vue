@@ -3,16 +3,15 @@
     <div class="container">
       <div class="level">
         <div class="level-left">
-          <h4 class="title is-4">Creator</h4>
+          <div class="level-item">
+            <h4 class="title is-4">Creator</h4>
+          </div>
         </div>
-        <div class="level-right" v-if="step === 1">
+        <div class="level-right" v-show="step === 1">
           <div class="level-item">
             <b-button @click="showHelpModal"
               ><i class="far fa-question-circle"></i
             ></b-button>
-          </div>
-          <div class="level-item">
-            <b-button>Save and exit</b-button>
           </div>
         </div>
       </div>
