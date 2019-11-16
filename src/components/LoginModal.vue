@@ -26,6 +26,7 @@
 
         <b-field>
           <b-input
+            v-model="username"
             placeholder="Username or email"
             required
             icon-pack="fas"
@@ -35,6 +36,7 @@
 
         <b-field>
           <b-input
+            v-model="password"
             type="password"
             placeholder="Password"
             password-reveal
@@ -58,6 +60,29 @@
     </form>
   </div>
 </template>
+
+<script>
+import RegisterModal from "@/components/RegisterModal.vue";
+
+export default {
+  data() {
+    return {
+      username: null,
+      password: null
+    };
+  },
+  methods: {
+    showRegisterModal() {
+      this.$parent.close();
+      this.$buefy.modal.open({
+        parent: this.$root,
+        component: RegisterModal,
+        hasModalCard: true
+      });
+    }
+  }
+};
+</script>
 
 <style lang="scss" scoped>
 .social-buttons {
@@ -84,20 +109,3 @@
   margin-left: 0.25em;
 }
 </style>
-
-<script>
-import RegisterModal from "@/components/RegisterModal.vue";
-
-export default {
-  methods: {
-    showRegisterModal() {
-      this.$parent.close();
-      this.$buefy.modal.open({
-        parent: this.$root,
-        component: RegisterModal,
-        hasModalCard: true
-      });
-    }
-  }
-};
-</script>
