@@ -173,7 +173,27 @@ export default {
       if (this.cues.length < 1) {
         return error("There aren't any cues on the list");
       }
+      if (!this.validateTimes()) {
+        return;
+      }
       this.$emit("finished");
+    },
+
+    validateTimes() {
+      let lastEndTime = 0;
+      for (let cue of this.cues) {
+        if (!cue.startTime || !cue.endTime) {
+          return error("Cues must have start and end times specified", 5000);
+        }
+        if (cue.endTime < cue.startTime) {
+          return error("End time must not be bigger than start time", 5000);
+        }
+        if (cue.startTime < lastEndTime) {
+          return error("Cue must not start before the previous is ended", 5000);
+        }
+        lastEndTime = cue.endTime;
+      }
+      return true;
     }
   },
 
