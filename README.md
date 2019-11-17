@@ -6,6 +6,8 @@
 
 Frontend for the karaoke web application made with Vue.js
 
+[![Build Status](https://travis-ci.com/karaoke-app/frontend.svg?branch=dev)](https://travis-ci.com/karaoke-app/frontend)
+
 ## Project setup
 ```
 npm install
