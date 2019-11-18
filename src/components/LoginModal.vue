@@ -1,6 +1,6 @@
 <template>
   <div class="modal-card login-modal" style="width:auto">
-    <form action="">
+    <form>
       <header class="modal-card-head">
         <p class="modal-card-title">Login</p>
       </header>
@@ -26,7 +26,7 @@
 
         <b-field>
           <b-input
-            v-model="username"
+            v-model="email"
             placeholder="Username or email"
             required
             icon-pack="fas"
@@ -47,7 +47,7 @@
         </b-field>
 
         <div class="buttons">
-          <b-button expanded type="is-success">Login</b-button>
+          <b-button expanded type="is-success" @click="login">Login</b-button>
         </div>
       </section>
 
@@ -67,7 +67,7 @@ import RegisterModal from "@/components/RegisterModal.vue";
 export default {
   data() {
     return {
-      username: null,
+      email: null,
       password: null
     };
   },
@@ -79,6 +79,15 @@ export default {
         component: RegisterModal,
         hasModalCard: true
       });
+    },
+    login: function() {
+      let email = this.email;
+      let password = this.password;
+      this.$store
+        .dispatch("login", { email, password })
+        .then(() => this.$router.push("/"))
+        .catch(err => console.log(err));
+    this.$parent.close();
     }
   }
 };

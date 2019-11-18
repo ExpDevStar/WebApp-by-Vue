@@ -1,6 +1,6 @@
 <template>
   <div class="modal-card">
-    <form @submit.prevent="register">
+    <form>
       <header class="modal-card-head">
         <p class="modal-card-title">Register</p>
       </header>
@@ -44,7 +44,7 @@
             I accept the Terms & Conditions
           </b-checkbox>
         </b-field>
-        <button expanded class="is-success" type="submit">Register</button>
+        <b-button expanded class="is-success" @click="register">Register</b-button>
       </div>
       <div class="modal-card-foot">
         <span
@@ -70,16 +70,17 @@ export default {
   },
   methods: {
     register: function() {
-      let user = {
+      let data = {
         name: this.name,
         email: this.email,
         password: this.password,
         confirmPassword: this.confirmPassword
       };
       this.$store
-        .dispatch("register", user)
+        .dispatch("register", data)
         .then(() => this.$router.push("/"))
         .catch(err => console.log(err));
+      this.$parent.close();
     },
     showLoginModal() {
       this.$parent.close();
