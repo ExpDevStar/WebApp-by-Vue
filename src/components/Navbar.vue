@@ -42,7 +42,7 @@
             @click="showLoginModal()"
             :class="{ 'is-inverted': homepage }"
           >
-            Login
+            Log in
           </button>
 
           <button

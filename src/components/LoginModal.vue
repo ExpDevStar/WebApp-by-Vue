@@ -87,7 +87,7 @@ export default {
         .dispatch("login", { email, password })
         .then(() => this.$router.push("/"))
         .catch(err => console.log(err));
-    this.$parent.close();
+      this.$parent.close();
     }
   }
 };

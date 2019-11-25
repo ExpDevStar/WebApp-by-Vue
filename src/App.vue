@@ -44,9 +44,9 @@ export default {
       return this.$route.path === "/";
     }
   },
-  created: function () {
-    axios.interceptors.response.use(undefined, function (err) {
-      return new Promise(function () {
+  created: function() {
+    axios.interceptors.response.use(undefined, function(err) {
+      return new Promise(function() {
         if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
           this.$store.dispatch("logout");
         }

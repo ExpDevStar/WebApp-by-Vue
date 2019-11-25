@@ -44,7 +44,9 @@
             I accept the Terms & Conditions
           </b-checkbox>
         </b-field>
-        <b-button expanded class="is-success" @click="register">Register</b-button>
+        <b-button expanded class="is-success" @click="register"
+          >Register</b-button
+        >
       </div>
       <div class="modal-card-foot">
         <span
