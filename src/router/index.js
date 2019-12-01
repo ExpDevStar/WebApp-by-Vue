@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import store from "../store/index.js";
+import Unauthorized from "../components/Unauthorized";
 
 Vue.use(VueRouter);
 
@@ -33,6 +34,10 @@ const routes = [
     meta: {
       requiresAuth: true
     }
+  },
+  {
+    path: "/401",
+    component: Unauthorized
   }
 ];
 
@@ -48,7 +53,7 @@ router.beforeEach((to, from, next) => {
       next();
       return;
     }
-    next("/");
+    next("/401");
   } else {
     next();
   }
