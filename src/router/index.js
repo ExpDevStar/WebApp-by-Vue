@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
+import NotFound from "../components/NotFound";
 
 Vue.use(VueRouter);
 
@@ -29,7 +30,9 @@ const routes = [
     name: "creator",
     component: () =>
       import(/* webpackChunkName: "creator" */ "../views/Creator.vue")
-  }
+  },
+  { path: "/404", component: NotFound },
+  { path: "*", redirect: "/404" }
 ];
 
 const router = new VueRouter({
