@@ -1,6 +1,6 @@
 <template>
   <div class="modal-card login-modal" style="width:auto">
-    <form action="">
+    <form>
       <header class="modal-card-head">
         <p class="modal-card-title">Login</p>
       </header>
@@ -26,6 +26,7 @@
 
         <b-field>
           <b-input
+            v-model="email"
             placeholder="Username or email"
             required
             icon-pack="fas"
@@ -35,6 +36,7 @@
 
         <b-field>
           <b-input
+            v-model="password"
             type="password"
             placeholder="Password"
             password-reveal
@@ -45,7 +47,7 @@
         </b-field>
 
         <div class="buttons">
-          <b-button expanded type="is-success">Login</b-button>
+          <b-button expanded type="is-success" @click="login">Login</b-button>
         </div>
       </section>
 
@@ -58,6 +60,38 @@
     </form>
   </div>
 </template>
+
+<script>
+import RegisterModal from "@/components/RegisterModal.vue";
+
+export default {
+  data() {
+    return {
+      email: null,
+      password: null
+    };
+  },
+  methods: {
+    showRegisterModal() {
+      this.$parent.close();
+      this.$buefy.modal.open({
+        parent: this.$root,
+        component: RegisterModal,
+        hasModalCard: true
+      });
+    },
+    login: function() {
+      let email = this.email;
+      let password = this.password;
+      this.$store
+        .dispatch("login", { email, password })
+        .then(() => this.$router.push("/"))
+        .catch(err => console.log(err));
+      this.$parent.close();
+    }
+  }
+};
+</script>
 
 <style lang="scss" scoped>
 .social-buttons {
@@ -84,20 +118,3 @@
   margin-left: 0.25em;
 }
 </style>
-
-<script>
-import RegisterModal from "@/components/RegisterModal.vue";
-
-export default {
-  methods: {
-    showRegisterModal() {
-      this.$parent.close();
-      this.$buefy.modal.open({
-        parent: this.$root,
-        component: RegisterModal,
-        hasModalCard: true
-      });
-    }
-  }
-};
-</script>
