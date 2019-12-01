@@ -10,9 +10,8 @@
       <p>
         You have to provide video source for your karaoke song. Currently
         supported providers are Youtube and Vimeo. In order to load video, click
-        the <b-button type="is-small">Load video</b-button> button, choose the
-        right provider and fill out the <strong>Video ID</strong> input. Video
-        id is included in url of the video you'd like to use, e.g.
+        the <b-button type="is-small">Load video</b-button> button and paste
+        link to the video into the input.
       </p>
 
       <pre>https://www.youtube.com/watch?v=<strong style="text-decoration: underline;">dQw4w9WgXcQ</strong></pre>
