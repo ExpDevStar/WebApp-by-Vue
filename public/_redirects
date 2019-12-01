@@ -1,1 +1,2 @@
+/api/*  https://karaoke-api.zdancewicz.it/api/:splat  200
 /*    /index.html   200
