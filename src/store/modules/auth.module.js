@@ -60,7 +60,6 @@ const actions = {
         method: "POST"
       })
         .then(resp => {
-          console.log(resp);
           const token = resp.data.access_token;
           const user = resp.data.user;
           localStorage.setItem("token", token);
@@ -69,7 +68,6 @@ const actions = {
           resolve(resp);
         })
         .catch(err => {
-          console.log(err);
           commit("auth_error", err);
           localStorage.removeItem("token");
           reject(err);

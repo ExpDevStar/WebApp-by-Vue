@@ -9,14 +9,14 @@
         <div class="buttons social-buttons">
           <b-button expanded class="is-facebook">
             <span class="icon">
-              <i class="fab fa-facebook"></i>
+              <i class="fab fa-facebook"/>
             </span>
             <span>Login with Facebook</span>
           </b-button>
 
           <b-button expanded class="is-google">
             <span class="icon">
-              <i class="fab fa-google"></i>
+              <i class="fab fa-google"/>
             </span>
             <span>Login with Google</span>
           </b-button>
@@ -31,7 +31,7 @@
             required
             icon-pack="fas"
             icon="user"
-          ></b-input>
+          />
         </b-field>
 
         <b-field>
@@ -43,7 +43,7 @@
             required
             icon-pack="fas"
             icon="key"
-          ></b-input>
+          />
         </b-field>
 
         <div class="buttons">
@@ -86,7 +86,6 @@ export default {
       this.$store
         .dispatch("login", { email, password })
         .then(() => this.$router.push("/"))
-        .catch(err => console.log(err));
       this.$parent.close();
     }
   }

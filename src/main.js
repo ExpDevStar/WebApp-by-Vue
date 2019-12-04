@@ -6,6 +6,7 @@ import store from "./store";
 import "buefy/dist/buefy.css";
 import "./assets/bulma-social.min.css";
 import axios from "axios";
+import "./vee-validate";
 
 Vue.config.productionTip = false;
 
