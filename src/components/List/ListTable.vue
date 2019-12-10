@@ -1,20 +1,14 @@
 <template>
   <section>
-    <div class="columns">
-      <div
-        class="column thumbnail"
-        v-for="song in filteredSongs"
-        v-bind:key="song.id"
-      >
-        <div class="thumbnail-title has-text-centered">
-          <p class="title">
-            {{ song.author }}
-          </p>
-          <p class="subtitle">
-            {{ song.title }}
-          </p>
+    <div class="columns is-multiline">
+      <div class="column is-3" v-for="song in songs" :key="song.id">
+        <div class="thumbnail">
+          <div class="thumbnail-title has-text-centered">
+            <h1 class="title">{{ song.author }}</h1>
+            <h2 class="subtitle">{{ song.title }}</h2>
+          </div>
+          <img src="http://placehold.jp/500x350.png" alt="placeholder" />
         </div>
-        <img src="http://placehold.jp/500x350.png" alt="placeholder" />
       </div>
     </div>
   </section>
@@ -25,7 +19,6 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "List-Table",
-  props: ["search"],
   data() {
     return {
       songs: [
@@ -53,24 +46,17 @@ export default {
           author: "Weird Al",
           genres: ["Comedy rap"]
         },
-
+        {
+          id: 5,
+          title: "Amish Paradise",
+          author: "Weird Al",
+          genres: ["Comedy rap"]
+        }
       ]
     };
   },
+  methods: {},
   computed: {
-    filteredSongs: function() {
-      let result = this.songs;
-      const searchValue = this.search.toLowerCase();
-
-      const filter = song =>
-        song.title.toLowerCase().includes(searchValue) ||
-        song.author.toLowerCase().includes(searchValue) ||
-        song.genres.some(genre =>
-          genre.toLowerCase().includes(this.selectedGenres.name)
-        );
-
-      return result.filter(filter);
-    },
     ...mapGetters(["selectedGenres"])
   }
 };

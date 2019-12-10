@@ -22,12 +22,15 @@
               <b-field>
                 <b-input
                   placeholder="Search..."
+                  v-model="searchInput"
                   type="search"
-                  icon-pack="fas"
-                  icon="search"
-                  v-model="search"
                 >
                 </b-input>
+                <p class="control">
+                  <b-button class="button is-success" @click="search"
+                    >Search</b-button
+                  >
+                </p>
               </b-field>
             </div>
             <div class="column is-4"></div>
@@ -36,7 +39,7 @@
       </div>
     </section>
     <section class="container" style="margin-top: 1rem">
-      <ListTable :search="search" />
+      <ListTable />
     </section>
   </main>
 </template>
@@ -50,13 +53,14 @@ export default {
   name: "List",
   data() {
     return {
-      search: ""
+      searchInput: ""
     };
   },
   components: {
     ListTable
   },
   methods: {
+    search: function() {},
     showAddGenreModal: function() {
       this.$buefy.modal.open({
         parent: this.$root,

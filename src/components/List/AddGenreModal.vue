@@ -1,17 +1,23 @@
 <template>
   <section>
-    <div class="modal-card" style="width:auto">
-      <header class="modal-card-head column">
+    <div class="modal-card">
+      <header class="modal-card-head">
         <p class="modal-card-title">Filter by genre:</p>
       </header>
       <section class="modal-card-body">
-        <div class="field" v-for="genre in genres" v-bind:key="genre.id">
-          <b-checkbox
-            v-model="selection"
-            v-bind:native-value="{ id: genre.id, name: genre.name }"
+        <div class="columns is-multiline">
+          <div
+            class="column is-half is-one-quarter-desktop"
+            v-for="genre in genres"
+            v-bind:key="genre.id"
           >
-            {{ genre.name }}
-          </b-checkbox>
+            <b-checkbox
+              v-model="selection"
+              v-bind:native-value="{ id: genre.id, name: genre.name }"
+            >
+              {{ genre.name }}
+            </b-checkbox>
+          </div>
         </div>
       </section>
       <footer class="modal-card-foot">
@@ -71,7 +77,8 @@ export default {
   methods: {
     saveSelection: function() {
       this.$store.commit("setSelectedGenres", this.selection);
-    }
+      this.$parent.close();
+    },
   },
   computed: {
     ...mapGetters(["selectedGenres"])
