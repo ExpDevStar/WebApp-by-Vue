@@ -1,10 +1,17 @@
+import axios from "axios";
+
 const state = {
-  selectedGenres: []
+  selectedGenres: [],
+  songs: [],
+  isLoading: false
 };
 
 const getters = {
   selectedGenres() {
     return state.selectedGenres;
+  },
+  songs() {
+    return state.songs;
   }
 };
 
@@ -17,10 +24,37 @@ const mutations = {
       state.selectedGenres.indexOf(deletedSelection),
       1
     );
+  },
+  fetchStart(state) {
+    state.isLoading = true;
+  },
+  fetchEnd(state, songs) {
+    state.songs = songs;
+    state.isLoading = false;
+  }
+};
+
+const actions = {
+  fetchSongs({ commit }) {
+    commit("fetchStart");
+    return new Promise(resolve => {
+      axios({
+        url: "http://www.mocky.io/v2/5df3b5463100006d00b5866e",
+        method: "GET"
+      })
+        .then(resp => {
+          commit("fetchEnd", resp.data.songs);
+          resolve(resp);
+        })
+        .catch(err => {
+          throw new Error(err);
+        });
+    });
   }
 };
 
 export default {
+  actions,
   state,
   getters,
   mutations
