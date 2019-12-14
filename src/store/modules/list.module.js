@@ -3,7 +3,7 @@ import axios from "axios";
 const state = {
   selectedGenres: [],
   songs: [],
-  isLoading: false
+  isLoadingList: false
 };
 
 const getters = {
@@ -26,7 +26,7 @@ const mutations = {
     );
   },
   fetchStart(state) {
-    state.isLoading = true;
+    state.isLoadingList = true;
   },
   fetchEnd(state, songs) {
     state.songs = songs;
@@ -39,7 +39,7 @@ const actions = {
     commit("fetchStart");
     return new Promise(resolve => {
       axios({
-        url: "http://www.mocky.io/v2/5df3b5463100006d00b5866e",
+        url: "http://www.mocky.io/v2/5df516b53000006300111c2b",
         method: "GET"
       })
         .then(resp => {

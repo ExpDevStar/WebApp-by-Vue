@@ -1,6 +1,6 @@
 <template>
   <main>
-    <KaraokeModule provider="youtube" embed-id="FTQbiNvZqaY" :cues="cues" />
+    <KaraokeModule provider="youtube" embed-id="FTQbiNvZqaY" :cues="song.cues" />
     <!-- <KaraokeModule provider="vimeo" embed-id="298282989" :cues="cues" /> -->
 
     <header class="section">
@@ -9,7 +9,7 @@
           <div class="level-left">
             <div class="level-item">
               <h4 class="title is-4">
-                {{ songMeta.artist }} - {{ songMeta.title }}
+                {{ song.artist }} - {{ song.title }}
               </h4>
             </div>
 
@@ -17,7 +17,7 @@
               <b-rate icon-pack="fas" spaced size="is-small"></b-rate>
             </div>
 
-            <div class="level-item">{{ songMeta.playCount }} plays</div>
+            <div class="level-item">{{ song.playCount }} plays</div>
           </div>
 
           <div class="level-right">
@@ -42,7 +42,7 @@
 
     <section class="section suggestions">
       <div class="container">
-        <h3 class="subtitle is-4">Songs from {{ songMeta.artist }}</h3>
+        <h3 class="subtitle is-4">Songs from {{ song.artist }}</h3>
 
         <div class="columns">
           <div class="column">
@@ -83,8 +83,9 @@
 <script>
 import KaraokeModule from "@/components/KaraokeModule.vue";
 import ReportModal from "@/components/ReportModal.vue";
-import cuesData from "@/assets/example-cues.json";
 import moment from "moment";
+import { mapGetters } from "vuex";
+import store from "@/store";
 
 export default {
   components: { KaraokeModule },
@@ -92,19 +93,19 @@ export default {
   data() {
     return {
       songMeta: {
-        title: "Africa",
-        artist: "Toto",
-        updatedAt: Date.now(),
-        playCount: 138
+        updatedAt: Date.now()
       },
-
       authorMeta: {
         name: "User",
         avatar: "http://placehold.jp/200x200.png"
-      },
-
-      cues: cuesData.cues
+      }
     };
+  },
+
+  beforeRouteEnter(to, from, next) {
+    Promise.all([store.dispatch("fetchSong", to.params.slug)]).then(() => {
+      next();
+    });
   },
 
   computed: {
@@ -112,11 +113,8 @@ export default {
       return moment(this.songMeta.updatedAt).fromNow();
     },
 
-    heading() {
-      return `${this.songMeta.artist} - ${this.songMeta.title}`;
-    }
+    ...mapGetters(["song"])
   },
-
   methods: {
     reportModal() {
       this.$buefy.modal.open({
