@@ -27,7 +27,7 @@
         <b-field>
           <b-input
             v-model="email"
-            placeholder="Username or email"
+            placeholder="Email"
             required
             icon-pack="fas"
             icon="user"
