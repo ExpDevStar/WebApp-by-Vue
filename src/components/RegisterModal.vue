@@ -33,7 +33,7 @@
             </b-field>
           </ValidationProvider>
           <ValidationProvider
-            rules="min:6|required"
+            rules="min:8|required"
             vid="password"
             name="Password"
             v-slot="{ errors, valid }"
@@ -45,7 +45,7 @@
             >
               <template slot="label">
                 Password
-                <b-tooltip type="is-dark" label="At least 6 characters">
+                <b-tooltip type="is-dark" label="At least 8 characters">
                   <span class="icon">
                     <i class="far fa-question-circle" />
                   </span>
@@ -59,7 +59,7 @@
             </b-field>
           </ValidationProvider>
           <ValidationProvider
-            rules="required|confirmed:password|min:6"
+            rules="required|confirmed:password|min:8"
             name="Password Confirmation"
             v-slot="{ errors, valid }"
           >
@@ -70,7 +70,7 @@
             >
               <b-input
                 type="password"
-                v-model="confirmPassword"
+                v-model="password_confirmation"
                 placeholder="Confirm Password"
               />
             </b-field>
@@ -111,7 +111,7 @@ export default {
       name: null,
       email: null,
       password: null,
-      confirmPassword: null,
+      password_confirmation: null,
       terms: null
     };
   },
@@ -125,7 +125,7 @@ export default {
         name: this.name,
         email: this.email,
         password: this.password,
-        confirmPassword: this.confirmPassword,
+        password_confirmation: this.password_confirmation,
         terms: this.terms
       };
       this.$store
