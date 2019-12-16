@@ -5,7 +5,7 @@
         :song="song"
         class="column is-3"
         v-for="song in songs"
-        :key="song.video_id"
+        :key="song.id"
       />
     </div>
   </section>

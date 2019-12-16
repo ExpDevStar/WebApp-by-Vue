@@ -1,6 +1,10 @@
 <template>
   <main>
-    <KaraokeModule provider="youtube" embed-id="FTQbiNvZqaY" :cues="song.cues" />
+    <KaraokeModule
+      :provider="song.provider_id"
+      :embed-id="song.video_id"
+      :cues="song.cues"
+    />
     <!-- <KaraokeModule provider="vimeo" embed-id="298282989" :cues="cues" /> -->
 
     <header class="section">
@@ -8,13 +12,11 @@
         <div class="level">
           <div class="level-left">
             <div class="level-item">
-              <h4 class="title is-4">
-                {{ song.artist }} - {{ song.title }}
-              </h4>
+              <h4 class="title is-4">{{ song.artist }} - {{ song.title }}</h4>
             </div>
 
             <div class="level-item">
-              <b-rate icon-pack="fas" spaced size="is-small"></b-rate>
+              <b-rate icon-pack="fas" spaced size="is-small" />
             </div>
 
             <div class="level-item">{{ song.playCount }} plays</div>
@@ -32,7 +34,7 @@
             <div class="level-item">
               <b-tooltip label="Report" type="is-dark"
                 ><b-button type="is-text" @click="reportModal"
-                  ><i class="fas fa-exclamation-triangle"></i></b-button
+                  ><i class="fas fa-exclamation-triangle"/></b-button
               ></b-tooltip>
             </div>
           </div>
@@ -103,7 +105,7 @@ export default {
   },
 
   beforeRouteEnter(to, from, next) {
-    Promise.all([store.dispatch("fetchSong", to.params.slug)]).then(() => {
+    Promise.all([store.dispatch("fetchSong", to.params.id)]).then(() => {
       next();
     });
   },

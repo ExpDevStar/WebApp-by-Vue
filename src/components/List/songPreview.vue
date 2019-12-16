@@ -21,7 +21,7 @@ export default {
       return {
         name: "song",
         params: {
-          songId: this.song.video_id
+          songId: this.song.id
         }
       };
     }

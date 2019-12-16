@@ -1,4 +1,5 @@
 import axios from "axios";
+import { API_URL } from "../../common/config";
 
 const state = {
   selectedGenres: [],
@@ -39,7 +40,7 @@ const actions = {
     commit("fetchStart");
     return new Promise(resolve => {
       axios({
-        url: "http://www.mocky.io/v2/5df516b53000006300111c2b",
+        url: API_URL + "/songs",
         method: "GET"
       })
         .then(resp => {
