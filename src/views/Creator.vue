@@ -50,15 +50,15 @@
             </p>
             <hr />
             <b-field label="Song artist">
-              <b-input type="text"></b-input>
+              <b-input type="text" v-model="artist"></b-input>
             </b-field>
             <b-field label="Song title">
-              <b-input type="text"></b-input>
+              <b-input type="text" v-model="title"></b-input>
             </b-field>
             <b-field>
               <div class="buttons">
                 <b-button @click="step--">Go back</b-button>
-                <b-button type="is-primary">Publish</b-button>
+                <b-button type="is-primary" @click="publish">Publish</b-button>
               </div>
             </b-field>
           </div>
@@ -71,6 +71,7 @@
 <script>
 import CreatorModule from "@/components/CreatorModule.vue";
 import CreatorModalHelp from "@/components/CreatorModalHelp.vue";
+import { error as errorToast, success } from "@/utils/toasts.js";
 
 export default {
   components: { CreatorModule },
@@ -79,6 +80,26 @@ export default {
     return {
       step: 0
     };
+  },
+
+  computed: {
+    artist: {
+      get() {
+        return this.$store.state.artist;
+      },
+      set(value) {
+        this.$store.commit("updateArtist", value);
+      }
+    },
+
+    title: {
+      get() {
+        return this.$store.state.title;
+      },
+      set(value) {
+        this.$store.commit("updateTitle", value);
+      }
+    }
   },
 
   methods: {
@@ -92,6 +113,22 @@ export default {
         component: CreatorModalHelp,
         hasModalCard: true
       });
+    },
+
+    publish() {
+      this.$store
+        .dispatch("storeSong")
+        .then(resp => {
+          if (resp.data.success && resp.data.success === true) {
+            success("Song published successfully!", 5000);
+            this.$router.push("/");
+          } else {
+            errorToast("Something went wrong");
+          }
+        })
+        .catch(() => {
+          errorToast("Something went wrong");
+        });
     }
   }
 };
