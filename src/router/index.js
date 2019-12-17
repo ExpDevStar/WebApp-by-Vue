@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import store from "../store/index.js";
 import Unauthorized from "../components/Unauthorized";
+import NotFound from "../components/NotFound";
 
 Vue.use(VueRouter);
 
@@ -38,7 +39,9 @@ const routes = [
   {
     path: "/401",
     component: Unauthorized
-  }
+  },
+  { path: "/404", component: NotFound },
+  { path: "*", redirect: "/404" }
 ];
 
 const router = new VueRouter({
