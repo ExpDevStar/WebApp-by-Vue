@@ -49,7 +49,7 @@ export default {
 </script>
 
 <style scoped>
-  .buttons{
-    justify-content: center;
-  }
+.buttons {
+  justify-content: center;
+}
 </style>
