@@ -75,7 +75,11 @@
               />
             </b-field>
           </ValidationProvider>
-          <ValidationProvider rules="required" name="terms" v-slot="{ errors, valid }">
+          <ValidationProvider
+            rules="required"
+            name="terms"
+            v-slot="{ errors, valid }"
+          >
             <b-field
               id="terms"
               :type="{ 'is-danger': errors[0], 'is-success': valid }"
@@ -104,6 +108,7 @@
 <script>
 import LoginModal from "@/components/LoginModal.vue";
 import { ValidationProvider, ValidationObserver } from "vee-validate";
+import { error as errorToast, success } from "@/utils/toasts.js";
 
 export default {
   data() {
@@ -130,7 +135,15 @@ export default {
       };
       this.$store
         .dispatch("register", data)
-        .then(() => this.$router.push("/"))
+        .then(() => {
+          this.$router.push("/");
+          success("Registered succesfully");
+        })
+        .catch(error => {
+          if (error.response.status == "422") {
+            errorToast(error.response.data.message);
+          }
+        });
       this.$parent.close();
     },
     showLoginModal() {

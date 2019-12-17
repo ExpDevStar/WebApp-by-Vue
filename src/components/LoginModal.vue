@@ -1,6 +1,6 @@
 <template>
   <div class="modal-card login-modal" style="width:auto">
-    <form>
+    <form @submit.prevent="login">
       <header class="modal-card-head">
         <p class="modal-card-title">Login</p>
       </header>
@@ -9,14 +9,14 @@
         <div class="buttons social-buttons">
           <b-button expanded class="is-facebook">
             <span class="icon">
-              <i class="fab fa-facebook"/>
+              <i class="fab fa-facebook" />
             </span>
             <span>Login with Facebook</span>
           </b-button>
 
           <b-button expanded class="is-google">
             <span class="icon">
-              <i class="fab fa-google"/>
+              <i class="fab fa-google" />
             </span>
             <span>Login with Google</span>
           </b-button>
@@ -47,7 +47,13 @@
         </b-field>
 
         <div class="buttons">
-          <b-button expanded type="is-success" @click="login">Login</b-button>
+          <b-button
+            expanded
+            type="is-success"
+            tag="input"
+            native-type="submit"
+            value="Login"
+          ></b-button>
         </div>
       </section>
 
@@ -63,6 +69,7 @@
 
 <script>
 import RegisterModal from "@/components/RegisterModal.vue";
+import { error as errorToast, success } from "@/utils/toasts.js";
 
 export default {
   data() {
@@ -81,11 +88,18 @@ export default {
       });
     },
     login: function() {
-      let email = this.email;
-      let password = this.password;
+      const { email, password } = this;
       this.$store
         .dispatch("login", { email, password })
-        .then(() => this.$router.push("/"))
+        .then(() => {
+          this.$router.push("/");
+          success("Logged in succesfully");
+        })
+        .catch(error => {
+          if (error.response.status == "401") {
+            errorToast(error.response.data.error);
+          }
+        });
       this.$parent.close();
     }
   }
