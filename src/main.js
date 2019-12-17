@@ -5,12 +5,20 @@ import router from "./router";
 import store from "./store";
 import "buefy/dist/buefy.css";
 import "./assets/bulma-social.min.css";
+import axios from "axios";
+import "./vee-validate";
 
 Vue.config.productionTip = false;
 
 Vue.use(Buefy, {
   defaultIconPack: "fas"
 });
+
+Vue.prototype.$http = axios;
+const access_token = localStorage.getItem("access_token");
+if (access_token) {
+  Vue.prototype.$http.defaults.headers.common["Authorization"] = access_token;
+}
 
 new Vue({
   router,

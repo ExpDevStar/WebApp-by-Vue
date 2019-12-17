@@ -15,7 +15,10 @@
       <b-navbar-item tag="router-link" :to="{ path: '/list' }"
         >Song list</b-navbar-item
       >
-      <b-navbar-item tag="router-link" :to="{ path: '/creator' }"
+      <b-navbar-item
+        v-if="isLogged"
+        tag="router-link"
+        :to="{ path: '/creator' }"
         >Creator</b-navbar-item
       >
     </template>
@@ -23,6 +26,7 @@
       <b-navbar-item tag="div">
         <div class="buttons">
           <button
+            v-if="!isLogged"
             class="button is-primary"
             @click="showRegisterModal()"
             :class="{ 'is-inverted': homepage }"
@@ -30,11 +34,21 @@
             Sign up
           </button>
           <button
+            v-if="!isLogged"
             class="button is-primary is-outlined"
             @click="showLoginModal()"
             :class="{ 'is-inverted': homepage }"
           >
-            Login
+            Log in
+          </button>
+
+          <button
+            v-if="isLogged"
+            class="button is-primary is-outlined"
+            @click="logout"
+            :class="{ 'is-inverted': homepage }"
+          >
+            Logout
           </button>
         </div>
       </b-navbar-item>
@@ -63,6 +77,16 @@ export default {
         component: RegisterModal,
         hasModalCard: true
       });
+    },
+    logout: function() {
+      this.$store.dispatch("logout").then(() => {
+        this.$router.push("/");
+      });
+    }
+  },
+  computed: {
+    isLogged: function() {
+      return this.$store.getters.isLogged;
     }
   }
 };
