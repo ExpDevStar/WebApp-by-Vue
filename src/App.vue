@@ -33,6 +33,7 @@
 
 <script>
 import Navbar from "@/components/Navbar.vue";
+import axios from "axios";
 
 export default {
   components: {
@@ -42,6 +43,16 @@ export default {
     homePage() {
       return this.$route.path === "/";
     }
+  },
+  created: function() {
+    axios.interceptors.response.use(undefined, function(err) {
+      return new Promise(function() {
+        if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
+          this.$store.dispatch("logout");
+        }
+        throw err;
+      });
+    });
   }
 };
 </script>

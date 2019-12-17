@@ -1,6 +1,6 @@
 <template>
   <div class="modal-card login-modal" style="width:auto">
-    <form action="">
+    <form @submit.prevent="login">
       <header class="modal-card-head">
         <p class="modal-card-title">Login</p>
       </header>
@@ -9,14 +9,14 @@
         <div class="buttons social-buttons">
           <b-button expanded class="is-facebook">
             <span class="icon">
-              <i class="fab fa-facebook"></i>
+              <i class="fab fa-facebook" />
             </span>
             <span>Login with Facebook</span>
           </b-button>
 
           <b-button expanded class="is-google">
             <span class="icon">
-              <i class="fab fa-google"></i>
+              <i class="fab fa-google" />
             </span>
             <span>Login with Google</span>
           </b-button>
@@ -26,26 +26,34 @@
 
         <b-field>
           <b-input
-            placeholder="Username or email"
+            v-model="email"
+            placeholder="Email"
             required
             icon-pack="fas"
             icon="user"
-          ></b-input>
+          />
         </b-field>
 
         <b-field>
           <b-input
+            v-model="password"
             type="password"
             placeholder="Password"
             password-reveal
             required
             icon-pack="fas"
             icon="key"
-          ></b-input>
+          />
         </b-field>
 
         <div class="buttons">
-          <b-button expanded type="is-success">Login</b-button>
+          <b-button
+            expanded
+            type="is-success"
+            tag="input"
+            native-type="submit"
+            value="Login"
+          ></b-button>
         </div>
       </section>
 
@@ -58,6 +66,45 @@
     </form>
   </div>
 </template>
+
+<script>
+import RegisterModal from "@/components/RegisterModal.vue";
+import { error as errorToast, success } from "@/utils/toasts.js";
+
+export default {
+  data() {
+    return {
+      email: null,
+      password: null
+    };
+  },
+  methods: {
+    showRegisterModal() {
+      this.$parent.close();
+      this.$buefy.modal.open({
+        parent: this.$root,
+        component: RegisterModal,
+        hasModalCard: true
+      });
+    },
+    login: function() {
+      const { email, password } = this;
+      this.$store
+        .dispatch("login", { email, password })
+        .then(() => {
+          this.$router.push("/");
+          success("Logged in succesfully");
+        })
+        .catch(error => {
+          if (error.response.status == "401") {
+            errorToast(error.response.data.error);
+          }
+        });
+      this.$parent.close();
+    }
+  }
+};
+</script>
 
 <style lang="scss" scoped>
 .social-buttons {
@@ -84,20 +131,3 @@
   margin-left: 0.25em;
 }
 </style>
-
-<script>
-import RegisterModal from "@/components/RegisterModal.vue";
-
-export default {
-  methods: {
-    showRegisterModal() {
-      this.$parent.close();
-      this.$buefy.modal.open({
-        parent: this.$root,
-        component: RegisterModal,
-        hasModalCard: true
-      });
-    }
-  }
-};
-</script>
