@@ -105,7 +105,7 @@ export default {
   },
 
   beforeRouteEnter(to, from, next) {
-    Promise.all([store.dispatch("fetchSong", to.params.id)]).then(() => {
+    Promise.all([store.dispatch("fetchSong", to.params.songId)]).then(() => {
       next();
     });
   },

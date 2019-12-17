@@ -38,17 +38,17 @@ const mutations = {
 const actions = {
   fetchSongs({ commit }) {
     commit("fetchStart");
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       axios({
         url: API_URL + "/songs",
         method: "GET"
       })
         .then(resp => {
-          commit("fetchEnd", resp.data.songs);
+          commit("fetchEnd", resp.data);
           resolve(resp);
         })
         .catch(err => {
-          throw new Error(err);
+          reject(err);
         });
     });
   }
