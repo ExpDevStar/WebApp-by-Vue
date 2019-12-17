@@ -15,7 +15,7 @@ Vue.use(Buefy, {
 });
 
 Vue.prototype.$http = axios;
-const access_token = localStorage.getItem("access_token");
+const access_token = localStorage.getItem("token");
 if (access_token) {
   Vue.prototype.$http.defaults.headers.common["Authorization"] =
     "Bearer " + access_token;
